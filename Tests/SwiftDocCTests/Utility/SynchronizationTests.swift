@@ -65,7 +65,7 @@ class SynchronizationTests: XCTestCase {
 
         // Schedule the synchronized block of work asynchronously
         testQueue.async {
-            synced.sync { _ in _ = sleep(5) }
+            synced.sync { _ in Thread.sleep(forTimeInterval: 5) }
         }
         
         // Asynchronously perform a check after 0.25 secs that the lock is locked
@@ -116,7 +116,7 @@ class SynchronizationTests: XCTestCase {
         // Block the access for a second, then update to `true`
         testQueue.async {
             synced.sync {
-                _ = sleep(1)
+                Thread.sleep(forTimeInterval: 1)
                 $0 = true
             }
         }
@@ -157,7 +157,7 @@ class SynchronizationTests: XCTestCase {
         // Block the access for a second, then update to `true`
         testQueue.async {
             synced.sync {
-                _ = sleep(5)
+                Thread.sleep(forTimeInterval: 5)
                 value = true
             }
         }
