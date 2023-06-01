@@ -17,6 +17,7 @@ class LogHandleTests: XCTestCase {
     /// Test that ``LogHandle`` doesn't append extra newlines to output
     /// - Bug: rdar://73462272
     func testWriteToStandardOutput() {
+        #if !os(Windows)
         let pipe = Pipe()
 
         // dup stdout to restore later
@@ -50,9 +51,11 @@ class LogHandleTests: XCTestCase {
             ========================================
             """
         )
+        #endif
     }
 
     func testFlushesStandardOutput() {
+        #if !os(Windows)
         let pipe = Pipe()
 
         // dup stdout to restore later
@@ -67,9 +70,11 @@ class LogHandleTests: XCTestCase {
         let data = pipe.fileHandleForReading.availableData
         let text = String(data: data, encoding: .utf8)
         XCTAssertEqual(text, "No newlines here", "\(LogHandle.self) didn't flush stdout")
+        #endif
     }
 
     func testFlushesStandardError() {
+        #if !os(Windows)
         let pipe = Pipe()
 
         // dup stdout to restore later
@@ -84,5 +89,6 @@ class LogHandleTests: XCTestCase {
         let data = pipe.fileHandleForReading.availableData
         let text = String(data: data, encoding: .utf8)
         XCTAssertEqual(text, "No newlines here", "\(LogHandle.self) didn't flush stderr")
+        #endif
     }
 }
